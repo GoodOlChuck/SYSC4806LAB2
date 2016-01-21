@@ -12,10 +12,16 @@ class Spellchecker
     #read file text_file_name
     #extract words from string (file contents) using method 'words' below.
     #put in dictionary with their frequency (calling train! method)
+    #data = ''
+    f = File.open(text_file_name, "r")  
+    data = f.read
+    wordarr = words(data)
+    train!(wordarr)
   end
 
   def dictionary
     #getter for instance attribute
+    @dictionary
   end
   
   #returns an array of words in the text.
@@ -26,10 +32,13 @@ class Spellchecker
   #train model (create dictionary)
   def train!(word_list)
     #create @dictionary, an attribute of type Hash mapping words to their count in the text {word => count}. Default count should be 0 (argument of Hash constructor).
+    @dictionary = Hash.new 0
+    word_list.each { |word| @dictionary[word] += 1 }
   end
 
   #lookup frequency of a word, a simple lookup in the @dictionary Hash
   def lookup(word)
+    @dictionary[word]
   end
   
   #generate all correction candidates at an edit distance of 1 from the input word.
@@ -57,7 +66,6 @@ class Spellchecker
   def known(words)
     return words.find_all {true } #find all words for which condition is true,
                                     #you need to figure out this condition
-    
   end
 
 
@@ -73,4 +81,3 @@ class Spellchecker
     
   
 end
-
