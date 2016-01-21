@@ -145,17 +145,30 @@ class Spellchecker
   # returns distance-2 replacements sorted by descending frequency in the model
   # else returns nil
   def correct(word)
-    edits1arr = edits1(word)
-    edits2arr = known_edits2(word)
-    if lookup(word)
-      return [word]
-    elsif known(edits1arr)
-      return edits1arr
-    elsif known(edits2arr)
-      return edits2arr
-    else
-      nil
+    words = []
+    words = known([word])
+    if words 
+      if words.length == 1
+        return words
+      end
     end
+    words = known(edits1(word))
+    if !words
+      words = known_edits2(word)
+    end
+    if words
+      words_2 = []
+      @dictionary.sort_by {|k,v| v}.reverse.each do |key, value|
+        str = key.dup
+	if words.include?(str) == true
+	  if words_2.include?(str) == false
+	    words_2.push(str)
+          end
+        end
+      end
+      return words_2
+    end
+    return nil
   end
     
   
