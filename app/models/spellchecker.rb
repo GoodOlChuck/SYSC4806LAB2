@@ -111,29 +111,20 @@ class Spellchecker
   # find known (in dictionary) distance-2 edits of target word.
   def known_edits2 (word)
     # get every possible distance - 2 edit of the input word. Return those that are in the dictionary.
-    dictionarywords = []
-    words = edits1(word)
-    words.each do |x|
-      words2 = edits1(x)
-      words2.each do |x|
-        if known(x)
-          dictionarywords.push(x)
-        end
-      end
-    end
-    return dictionarywords
+    arr2 = []
+    
+    arr1 = edits1(word)
+    arr1.each do |e|
+   	 arr2.concat(edits1(e))
+    end 
+
+    return known(arr2)
   end
 
   #return subset of the input words (argument is an array) that are known by this dictionary
   def known(words)
-    subset = []
-    words.each do |x|
-      if @dictionary.has_key?(x)
-        subset.push(x)
-      end
-    end
-    return subset#find all words for which condition is true,
-                                                    #you need to figure out this condition words.find_all {|w| @dictionary.has_key?(w)}
+    result = words.find_all {|w| @dictionary.has_key?(w) }
+    result.empty? ? nil : result
   end
 
 
