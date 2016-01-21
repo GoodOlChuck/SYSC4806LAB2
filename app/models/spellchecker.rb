@@ -162,5 +162,4 @@ class Spellchecker
     return nil
   end
     
-  
 end
